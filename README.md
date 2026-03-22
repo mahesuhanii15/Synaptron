@@ -13,13 +13,19 @@ This project captures EMG signals from three forearm muscle groups, processes th
 Instead of controlling each finger individually (which is difficult with surface EMG), the system uses muscle synergies to classify gestures such as:
 
 Open Hand
+
 Close Fist
+
 Pinch Grip
 
 These gestures are then mapped to motor commands controlling the prosthetic fingers.
+
 Hardware Components
+
 Sensors
+
 3 × Surface EMG Sensors (Muscle Sensor v3)
+
 Microcontroller
 Arduino Uno / Raspberry Pi Pico / ESP32
 Actuators
