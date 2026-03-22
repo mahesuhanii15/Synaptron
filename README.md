@@ -13,9 +13,7 @@ This project captures EMG signals from three forearm muscle groups, processes th
 Instead of controlling each finger individually (which is difficult with surface EMG), the system uses muscle synergies to classify gestures such as:
 
 Open Hand
-
 Close Fist
-
 Pinch Grip
 
 These gestures are then mapped to motor commands controlling the prosthetic fingers.
