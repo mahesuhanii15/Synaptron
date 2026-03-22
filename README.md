@@ -31,7 +31,7 @@ EMG electrodes<br>
 Power supply<br>
 Prosthetic hand structure<br>
 
-Sensor Placement
+Sensor Placement<br>
 Three sensors are placed on different forearm muscle groups:
 | Sensor   | Muscle Group         | Function             |
 | -------- | -------------------- | -------------------- |
@@ -39,7 +39,7 @@ Three sensors are placed on different forearm muscle groups:
 | Sensor 2 | Extensor compartment | Open hand            |
 | Sensor 3 | Thumb muscles        | Pinch grip           |
 
-Methodology
+Methodology<br>
 Step 1: Signal Acquisition
 
 EMG sensors capture analog voltages proportional to muscle activity. These signals are sampled at 1000 Hz using a microcontroller ADC and transmitted to MATLAB for processing. This sampling rate satisfies the Nyquist requirement for EMG signals (20–450 Hz).
