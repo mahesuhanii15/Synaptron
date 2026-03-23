@@ -91,3 +91,11 @@ MATLAB streams motor commands to the microcontroller via serial communication, e
 Step 8: Actuation
 
 The microcontroller converts incoming commands into servo angles (0–180°) to actuate the prosthetic hand and perform the desired gesture.
+
+HOW TO RUN:-<br>
+1)Upload Arduino code<br>
+2)Close Arduino IDE<br>
+33)Open MATLAB<br>
+4)Run:<br>
+  final_emg_run<br>
+
