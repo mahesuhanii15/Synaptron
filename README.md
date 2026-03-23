@@ -1,101 +1,141 @@
-# Synaptron
-EMG based hand gesture recognition device
-A 3-channel EMG based prosthetic hand control system that processes muscle signals, classifies gestures, and converts them into servo motor commands for controlling a prosthetic hand.
+# Synaptron  
+### EMG-Based Hand Gesture Recognition & Prosthetic Control System
 
-The system implements a complete pipeline:
+A 3-channel EMG-based prosthetic hand control system that processes muscle signals, classifies gestures, and converts them into real-time servo motor commands for controlling a 5-DOF prosthetic hand.
+
+---
+
+## 🔷 System Pipeline
+
 EMG Sensors → Signal Processing → Feature Extraction → Gesture Classification → Motor Commands → Prosthetic Hand
-Project Overview
 
-Human muscles generate small electrical signals when they contract. These signals are called Electromyography (EMG) signals.
+---
 
-This project captures EMG signals from three forearm muscle groups, processes them in MATLAB, and uses the processed signals to control a 5-finger prosthetic hand.
+## 🔷 Project Overview
 
-Instead of controlling each finger individually (which is difficult with surface EMG), the system uses muscle synergies to classify gestures such as:
+Human muscles generate small electrical signals during contraction, known as Electromyography (EMG) signals.
 
-Open Hand<br>
-Close Fist<br>
-Pinch Grip<br>
+This project captures EMG signals from three forearm muscle groups, processes them in MATLAB, and uses the extracted features to control a 5-finger prosthetic hand.
 
-These gestures are then mapped to motor commands controlling the prosthetic fingers.
+Instead of controlling each finger independently (which is difficult with surface EMG), the system leverages **muscle synergies** to recognize intuitive gestures:
 
-Hardware Components
+- Open Hand  
+- Close Fist  
+- Pinch Grip  
 
-Sensors<br>
-3 × Surface EMG Sensors (Muscle Sensor v3)<br>
-Microcontroller<br>
-Arduino Uno / Raspberry Pi Pico / ESP32<br>
-Actuators<br>
-5 × Servo Motors<br>
-Other Components<br>
-EMG electrodes<br>
-Power supply<br>
-Prosthetic hand structure<br>
+These gestures are mapped to coordinated finger movements of the prosthetic hand.
 
-Sensor Placement<br>
-Three sensors are placed on different forearm muscle groups:
+---
+
+## 🔷 Hardware Components
+
+### Sensors
+- 3 × Surface EMG Sensors (Muscle Sensor v3)
+
+### Microcontroller
+- Arduino Uno / Raspberry Pi Pico / ESP32
+
+### Actuators
+- 5 × Servo Motors
+
+### Other Components
+- EMG electrodes  
+- External power supply  
+- 3D printed prosthetic hand structure  
+
+---
+
+## 🔷 Sensor Placement
+
+Three sensors are placed on distinct forearm muscle groups:
+
 | Sensor   | Muscle Group         | Function             |
-| -------- | -------------------- | -------------------- |
+|----------|---------------------|----------------------|
 | Sensor 1 | Flexor compartment   | Close fingers (fist) |
 | Sensor 2 | Extensor compartment | Open hand            |
 | Sensor 3 | Thumb muscles        | Pinch grip           |
 
-Methodology<br>
-Step 1: Signal Acquisition
+---
 
-EMG sensors capture analog voltages proportional to muscle activity. These signals are sampled at 1000 Hz using a microcontroller ADC and transmitted to MATLAB for processing. This sampling rate satisfies the Nyquist requirement for EMG signals (20–450 Hz).
+## 🔷 Methodology
 
-Step 2: EMG Signal Preprocessing
+### 1. Signal Acquisition  
+EMG signals are acquired as analog voltages from muscle activity and sampled at **1000 Hz** using a microcontroller ADC. This satisfies the Nyquist requirement for EMG signals (20–450 Hz).
 
-Raw EMG signals are noisy and require preprocessing to extract meaningful information:
+---
 
-DC Offset Removal: Eliminates baseline drift.
-Bandpass Filtering (20–200 Hz): Removes motion artifacts and high-frequency noise.
-Notch Filtering (50 Hz, 100 Hz): Suppresses power-line interference.
-Rectification: Converts bipolar signals into positive values.
-RMS Envelope Extraction (~50 ms window): Produces a smooth representation of muscle activation.
+### 2. Signal Preprocessing  
+Raw EMG signals are conditioned through:
 
-The output consists of three EMG envelopes, each corresponding to a muscle group.
+- **DC Offset Removal** → Eliminates baseline drift  
+- **Bandpass Filtering (20–200 Hz)** → Removes motion artifacts and high-frequency noise  
+- **Notch Filtering (50 Hz, 100 Hz)** → Suppresses power-line interference  
+- **Rectification** → Converts bipolar signal to unipolar  
+- **RMS Envelope Extraction (~50 ms)** → Smooth representation of muscle activation  
 
-Step 3: Normalization
+Output: Three processed EMG envelopes corresponding to three muscle groups.
 
-Signals are normalized to a 0–1 range to reduce variability across users and sessions, where 0 indicates relaxation and 1 indicates maximum contraction.
+---
 
-Step 4: Feature Extraction
+### 3. Normalization  
+Signals are scaled to a **0–1 range** to reduce variability across users and sessions:
 
-EMG signals are processed using sliding windows (200 ms with overlap). Key features such as Mean Absolute Value (MAV) and Root Mean Square (RMS) are extracted to represent muscle activation intensity.
+- 0 → Relaxed  
+- 1 → Maximum contraction  
 
-Step 5: Gesture Classification
+---
 
-A lightweight rule-based classifier identifies gestures based on dominant muscle activation:
+### 4. Feature Extraction  
+Signals are segmented using sliding windows (200 ms with overlap). Features extracted:
 
-Flexor activation → Close Fist
-Extensor activation → Open Hand
-Thumb activation → Pinch Grip
+- Mean Absolute Value (MAV)  
+- Root Mean Square (RMS)  
 
-This approach is computationally efficient and suitable for real-time control.
+These represent muscle activation intensity.
 
-Step 6: Gesture to Motor Mapping
+---
 
-Each detected gesture is mapped to predefined servo positions controlling the prosthetic fingers:
+### 5. Gesture Classification  
+A lightweight rule-based classifier determines the gesture based on dominant muscle activation:
 
-Open: All fingers extended
-Fist: All fingers flexed
-Pinch: Thumb and index flexed
+- Flexor → Close Fist  
+- Extensor → Open Hand  
+- Thumb → Pinch Grip  
 
-Motor commands are represented in a normalized range (0–1).
+This method is computationally efficient and suitable for real-time systems.
 
-Step 7: Communication
+---
 
-MATLAB streams motor commands to the microcontroller via serial communication, enabling real-time control.
+### 6. Gesture-to-Motor Mapping  
 
-Step 8: Actuation
+Each gesture is mapped to predefined servo configurations:
 
-The microcontroller converts incoming commands into servo angles (0–180°) to actuate the prosthetic hand and perform the desired gesture.
+| Gesture | Thumb | Index | Middle | Ring | Pinky |
+|--------|------|------|--------|------|-------|
+| Open   | 0    | 0    | 0      | 0    | 0     |
+| Fist   | 1    | 1    | 1      | 1    | 1     |
+| Pinch  | 1    | 1    | 0      | 0    | 0     |
 
-HOW TO RUN:-<br>
-1)Upload Arduino code<br>
-2)Close Arduino IDE<br>
-3)Open MATLAB<br>
-4)Run:<br>
-  final_emg_run<br>
+(0 → Open, 1 → Closed)
 
+---
+
+### 7. Communication  
+MATLAB streams motor commands to the microcontroller via serial communication for real-time control.
+
+---
+
+### 8. Actuation  
+The microcontroller converts incoming commands into servo angles (0°–180°), actuating the prosthetic fingers to perform the desired gesture.
+
+---
+
+## 🔷 How to Run
+
+1. Upload Arduino code from the `/arduino` folder  
+2. Connect EMG sensors to the microcontroller  
+3. Close Arduino IDE (to free the serial port)  
+4. Open MATLAB  
+5. Run:
+   ```matlab
+   final_emg_run
