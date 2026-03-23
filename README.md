@@ -95,7 +95,7 @@ The microcontroller converts incoming commands into servo angles (0–180°) to 
 HOW TO RUN:-<br>
 1)Upload Arduino code<br>
 2)Close Arduino IDE<br>
-33)Open MATLAB<br>
+3)Open MATLAB<br>
 4)Run:<br>
   final_emg_run<br>
 
