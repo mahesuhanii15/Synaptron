@@ -1,5 +1,0 @@
-[emg_env, fs, t] = preprocess_emg_live();
-
-TH = 0.18;
-
-motor_cmd = prosthetic_control_5finger(emg_env, fs, t, TH, true);
